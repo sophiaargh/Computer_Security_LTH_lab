@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <crypt.h>
 #include "pwdblib.h"   /* include header declarations for pwdblib.c */
 
 /* Define some constants. */
@@ -34,10 +35,9 @@ int print_info(const char *username)
   }
 }
 
-int find_user(const char *username, const char *password){
+int find_user(const char username[], char password[]){
   struct pwdb_passwd *p = pwdb_getpwnam(username);
-  char salt[SALT_SIZE + 1];
-  //char *h_passwd = malloc(PASSWD_SIZE+SALT_SIZE);
+  char salt[SALT_SIZE];
   if (p != NULL) {
 
     //extract the salt from the database (first 2 bytes of the passwd)
@@ -63,22 +63,11 @@ void read_username(char *username)
   username[strlen(username) - 1] = '\0';
 }
 
-void read_password(char *password)
-{
-  printf("password: ");
-  
-  //password = getpass();
-  fgets(password, PASSWD_SIZE, stdin);
-  /* remove the newline included by getline() */
-  password[strlen(password) - 1] = '\0';
-  printf("hello");
-}
-
 int main(int argc, char **argv){
   while(1){
 
     char username[USERNAME_SIZE];
-    char password[PASSWD_SIZE];
+    char *password;
 
     /* 
     * Write "login: " and read user input. Copies the username to the
@@ -87,20 +76,21 @@ int main(int argc, char **argv){
     read_username(username);
     /* 
     * Write "password: " and read user input. Copies the password to the
-    * password variable.
+    * password variable without echo.
     */
-    read_password(password);
+    password = getpass("Password: ");
 
     /* Show user info from our local pwfile. */
     if (find_user(username, password) == NOUSER) {
         /* if there are no user with that username*/
         printf("\nUnknown user or incorrect password\n"); 
     }else{
-        printf("\nUser authenticated successfully");
+        printf("\nUser authenticated successfully\n");
         return 0;
     }
   }
 }
-  
 
   
+
+
