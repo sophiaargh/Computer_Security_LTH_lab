@@ -54,7 +54,7 @@ int main(int argc, char **argv)
   /* Show user info from our local pwfile. */
   if (print_info(username) == NOUSER) {
       /* if there are no user with that usename... */
-      printf("\nFound no user with name: %s\n", username);   
+      printf("\nFound no user with name: %s\n", username);     
       return 0;
   }
 }
