@@ -35,7 +35,7 @@ int print_info(const char *username)
   }
 }
 
-int find_user(const char username[], char password[]){
+int find_user(const char* username, char* password){
   struct pwdb_passwd *p = pwdb_getpwnam(username);
   char salt[SALT_SIZE];
   if (p != NULL) {
@@ -78,14 +78,14 @@ int main(int argc, char **argv){
     * Write "password: " and read user input. Copies the password to the
     * password variable without echo.
     */
-    password = getpass("Password: ");
+    password = getpass("password: ");
 
     /* Show user info from our local pwfile. */
     if (find_user(username, password) == NOUSER) {
         /* if there are no user with that username*/
-        printf("\nUnknown user or incorrect password\n"); 
+        printf("\n Unknown user or incorrect password \n"); 
     }else{
-        printf("\nUser authenticated successfully\n");
+        printf("\n User authenticated successfully \n");
         return 0;
     }
   }
